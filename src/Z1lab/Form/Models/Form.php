@@ -98,6 +98,55 @@ class Form extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getFormAttribute()
+    {
+        return $this->attributes['form'];
+    }
+
+    /**
+     * @param string $value
+     */
+    public function action(string $value)
+    {
+        $this->attributes['action'] = $value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function self(string $value)
+    {
+        $this->attributes['self'] = $value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function method(string $value)
+    {
+        $this->attributes['method'] = $value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function return(string $value)
+    {
+        $this->attributes['return'] = $value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function callback(string $value)
+    {
+        $this->attributes['callback'] = $value;
+    }
+
+
+    /**
      * @param \Z1lab\Form\Models\Input $input
      */
     private function input($input)
@@ -105,13 +154,5 @@ class Form extends Model
         if ($this->attributes['field_set']) throw new MassAssignmentException('Not allowed to set input and fieldsets in same Model.');
 
         $this->setFormAttribute($input->toArray());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFormAttribute()
-    {
-        return $this->attributes['form'];
     }
 }

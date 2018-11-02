@@ -129,6 +129,14 @@ class Input extends Model
     }
 
     /**
+     * @param $value
+     */
+    public function value($value)
+    {
+        $this->attributes['value'] = $value;
+    }
+
+    /**
      * @param string $value
      * @return $this
      */

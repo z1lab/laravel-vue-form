@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/doctrine/inflector" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/doctrine/instantiator" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/illuminate/contracts" vcs="Git" />
@@ -26,7 +27,6 @@
     <mapping directory="$PROJECT_DIR$/vendor/sebastian/object-enumerator" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/sebastian/object-reflector" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/sebastian/recursion-context" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor/symfony/contracts" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/symfony/debug" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/symfony/event-dispatcher" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/symfony/finder" vcs="Git" />

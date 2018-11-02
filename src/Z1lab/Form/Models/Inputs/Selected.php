@@ -63,7 +63,7 @@ class Selected extends Input
      * @param string $value
      * @return $this
      */
-    public function value(string $value)
+    public function value($value)
     {
         $this->attributes['options']['value'] = $value;
 

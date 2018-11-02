@@ -1,0 +1,46 @@
+{
+  "name": "z1lab/laravel-vue-form",
+  "type": "library",
+  "description": "A PHP package for generate VueJS forms.",
+  "license": "MIT",
+  "keywords": [
+    "Laravel",
+    "VueJS",
+    "Json:API"
+  ],
+  "authors": [
+    {
+      "name": "Olimar Ferraz",
+      "email": "webmaster@z1lab.com.br"
+    }
+  ],
+  "homepage": "https://github.com/z1lab/laravel-vue-form",
+  "support": {
+    "issues": "https://github.com/z1lab/laravel-vue-form/issues",
+    "source": "https://github.com/z1lab/laravel-vue-form"
+  },
+  "require": {
+    "php": ">=7.1.3",
+    "illuminate/support": "5.7.*",
+    "illuminate/http": "5.7.*",
+    "illuminate/contracts" : "5.7.*",
+    "jenssegers/model": "1.2.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Z1lab\\Form\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Z1lab\\Form\\FormServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

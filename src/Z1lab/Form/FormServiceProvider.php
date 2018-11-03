@@ -6,7 +6,7 @@
  * Time: 18:46
  */
 
-namespace Z1lab\Form\Z1lab\Form;
+namespace Z1lab\Form;
 
 use Illuminate\Support\ServiceProvider;
 

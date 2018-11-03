@@ -6,8 +6,7 @@
  * Time: 21:11
  */
 
-namespace Z1lab\Form\Z1lab\Form;
-
+namespace Z1lab\Form;
 
 use Z1lab\Form\Models\Form;
 use Z1lab\Form\Http\Resource\Form as Resource;

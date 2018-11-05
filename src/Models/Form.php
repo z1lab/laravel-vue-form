@@ -40,9 +40,9 @@ class Form extends Model
     ];
 
     /**
-     * @param $value
+     * @param string $value
      */
-    public function setActionAttribute($value)
+    public function setActionAttribute(string $value)
     {
         if (str_contains($value, 'update')) $this->attributes['method'] = 'PUT';
 
@@ -56,8 +56,6 @@ class Form extends Model
     public function createMany(array $fields)
     {
         foreach ($fields as $field) {
-            if ($field instanceof Fieldset) throw new MassAssignmentException('createMany accepts only Inputs.');
-
             $this->create($field);
         }
 
@@ -77,16 +75,6 @@ class Form extends Model
         }
 
         return $this;
-    }
-
-    /**
-     * @param Fieldset $fieldset
-     */
-    private function fieldset(Fieldset $fieldset)
-    {
-        $this->attributes['field_set'] = TRUE;
-
-        $this->setFormAttribute($fieldset->toArray());
     }
 
     /**
@@ -145,13 +133,25 @@ class Form extends Model
         $this->attributes['callback'] = $value;
     }
 
+    /**
+     * @param Fieldset $fieldset
+     */
+    private function fieldset(Fieldset $fieldset)
+    {
+        if (isset($this->attributes['form']) && isset($this->attributes['form'][0]['type']))
+            throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
+
+        $this->attributes['field_set'] = TRUE;
+
+        $this->setFormAttribute($fieldset->toArray());
+    }
 
     /**
      * @param \Z1lab\Form\Models\Input $input
      */
     private function input($input)
     {
-        if ($this->attributes['field_set']) throw new MassAssignmentException('Not allowed to set input and fieldsets in same Model.');
+        if ($this->attributes['field_set']) throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
 
         $this->setFormAttribute($input->toArray());
     }

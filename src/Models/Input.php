@@ -27,6 +27,9 @@ class Input extends Model
         'type',
         'placeholder',
         'type_input',
+        'required',
+        'disabled',
+        'readonly',
     ];
     /**
      * @var array
@@ -43,6 +46,9 @@ class Input extends Model
     public function setNameAttribute($value)
     {
         if (!isset($this->attributes['label'])) $this->setLabelAttribute($value);
+
+        $this->attributes['disabled'] = FALSE;
+        $this->attributes['readonly'] = FALSE;
         $this->attributes['name'] = $value;
     }
 
@@ -79,7 +85,7 @@ class Input extends Model
      */
     public function name(string $value)
     {
-        $this->attributes['name'] = $value;
+        $this->setNameAttribute($value);
 
         return $this;
     }
@@ -101,6 +107,8 @@ class Input extends Model
      */
     public function validate(string $value)
     {
+        if (str_contains($value, 'required')) $this->attributes['required'] = TRUE;
+
         $this->attributes['validate'] = $value;
 
         return $this;
@@ -130,10 +138,13 @@ class Input extends Model
 
     /**
      * @param $value
+     * @return $this
      */
     public function value($value)
     {
         $this->attributes['value'] = $value;
+
+        return $this;
     }
 
     /**
@@ -147,4 +158,36 @@ class Input extends Model
         return $this;
     }
 
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function required(bool $value = TRUE)
+    {
+        $this->attributes['required'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function disabled(bool $value = TRUE)
+    {
+        $this->attributes['disabled'] = $value;
+        $this->attributes['readonly'] = $value;
+        $this->attributes['name'] = NULL;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $value
+     * @return Input
+     */
+    public function readonly(bool $value = TRUE)
+    {
+        return $this->disabled($value);
+    }
 }

@@ -36,7 +36,7 @@ class FormServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'form');
         } else {
-            $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'form');
+            $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'form');
         }
     }
 
@@ -48,7 +48,7 @@ class FormServiceProvider extends ServiceProvider
     public function publishComponents()
     {
         $this->publishes([
-            __DIR__ . '/../../resources/js/components' => base_path('resources/js/components/forms'),
+            __DIR__ . '/../resources/js/components' => base_path('resources/js/components/forms'),
         ], 'form-components');
     }
 
@@ -60,7 +60,7 @@ class FormServiceProvider extends ServiceProvider
     public function publishTranslations()
     {
         $this->publishes([
-            __DIR__ . '/../..//resources/lang' => resource_path('lang/vendor/form'),
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/form'),
         ]);
     }
 }

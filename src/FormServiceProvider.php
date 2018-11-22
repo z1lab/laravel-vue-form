@@ -31,12 +31,12 @@ class FormServiceProvider extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = resource_path('lang/form');
+        $langPath = resource_path('lang/vendor/form');
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'form');
         } else {
-            $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'form');
+            $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'form');
         }
     }
 
@@ -61,6 +61,6 @@ class FormServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../resources/lang' => resource_path('lang/vendor/form'),
-        ]);
+        ], 'form-translations');
     }
 }

@@ -6,4 +6,12 @@
  * Time: 21:03
  */
 
-return [];
+return [
+    'name'       => 'Nome',
+    'email'      => 'Email',
+    'nickname'   => 'Como gostaria de ser chamado',
+    'document'   => 'CPF',
+    'gender'     => 'Sexo',
+    'phone'      => 'Telefone',
+    'birth_date' => 'Data de nascimento',
+];

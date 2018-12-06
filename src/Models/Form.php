@@ -14,6 +14,7 @@ use Jenssegers\Model\Model;
 class Form extends Model
 {
     const FORM = [];
+    const HEADER = [];
     const SELF = '';
     const ACTION = '';
     const METHOD = 'POST';
@@ -24,6 +25,7 @@ class Form extends Model
      */
     protected $fillable = [
         'self',
+        'header',
         'action',
         'return',
         'callback',
@@ -33,10 +35,11 @@ class Form extends Model
      */
     protected $attributes = [
         'form'      => self::FORM,
+        'header'    => self::HEADER,
         'method'    => self::METHOD,
         'field_set' => self::FIELDSET,
-        'self'      => self::ACTION,
-        'action'    => self::SELF,
+        'self'      => self::SELF,
+        'action'    => self::ACTION,
     ];
 
     /**
@@ -47,6 +50,21 @@ class Form extends Model
         if (str_contains($value, 'update')) $this->attributes['method'] = 'PUT';
 
         $this->attributes['action'] = $value;
+    }
+
+    /**
+     * @param string $title
+     * @param string $subtitle
+     * @return $this
+     */
+    public function header(string $title = '', string $subtitle = '')
+    {
+        $this->attributes['header'] = [
+            'title'    => $title,
+            'subtitle' => $subtitle,
+        ];
+
+        return $this;
     }
 
     /**
@@ -95,46 +113,62 @@ class Form extends Model
 
     /**
      * @param string $value
+     * @return $this
      */
     public function action(string $value)
     {
         $this->attributes['action'] = $value;
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function self(string $value)
     {
         $this->attributes['self'] = $value;
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function method(string $value)
     {
         $this->attributes['method'] = $value;
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function return(string $value)
     {
         $this->attributes['return'] = $value;
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function callback(string $value)
     {
         $this->attributes['callback'] = $value;
+
+        return $this;
     }
 
     /**
      * @param Fieldset $fieldset
+     * @return $this
      */
     private function fieldset(Fieldset $fieldset)
     {
@@ -144,15 +178,20 @@ class Form extends Model
         $this->attributes['field_set'] = TRUE;
 
         $this->setFormAttribute($fieldset->toArray());
+
+        return $this;
     }
 
     /**
-     * @param \Z1lab\Form\Models\Input $input
+     * @param $input
+     * @return $this
      */
     private function input($input)
     {
         if ($this->attributes['field_set']) throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
 
         $this->setFormAttribute($input->toArray());
+
+        return $this;
     }
 }

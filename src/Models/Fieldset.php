@@ -63,17 +63,23 @@ class Fieldset extends Model
 
     /**
      * @param string $value
+     * @return $this
      */
     public function legend(string $value)
     {
         $this->attributes['legend'] = $value;
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function subtitle(string $value)
     {
         $this->attributes['subtitle'] = $value;
+
+        return $this;
     }
 }

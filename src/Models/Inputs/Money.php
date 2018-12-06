@@ -27,8 +27,13 @@ class Money extends Input
         parent::__construct($attributes);
     }
 
+    /**
+     * @return $this
+     */
     public function percentage()
     {
         $this->attributes['percentage'] = TRUE;
+
+        return $this;
     }
 }

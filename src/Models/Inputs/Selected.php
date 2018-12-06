@@ -72,6 +72,7 @@ class Selected extends Input
 
     /**
      * @param array $array
+     * @return $this
      */
     public function data(array $array)
     {
@@ -80,5 +81,7 @@ class Selected extends Input
         } else {
             $this->attributes['options'] = $array;
         }
+
+        return $this;
     }
 }

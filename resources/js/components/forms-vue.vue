@@ -5,27 +5,37 @@
                 {{ config.header.title }}
             </h4>
             <p class="text-muted font-13">
-                {{ config.header.information }}
+                {{ config.header.subtitle }}
             </p>
         </div>
         <div class="card-body">
             <form id="form-submit" class="needs-validation" method="post">
                 <div class="row" v-if="field_set">
                     <div class="col-md-12">
-                        <fieldset class="margin-fieldset" v-for="group in form">
+                        <fieldset class="margin-fieldset" v-for="(group, key) in form">
                             <legend class="h3 header-title">{{ group.legend }}</legend>
+                            <p>{{ group.subtitle || ''}}</p>
 
                             <div class="row">
-                                <div class="form-group" v-for="input in group.inputs" :class="input.col || 'col-md-12'">
-                                    <label :for="input.name" class="col-form-label"> {{ input.label }} </label>
+                                <div v-for="input in group.inputs" :class="input.col || 'col-md-12'" v-if="condition(input, form)">
+                                    <div class="form-group" v-if="input.disabled">
+                                        <label class="col-form-label"> {{ input.label }} </label>
 
-                                    <component :is="input.type_input || 'input-default'" :data="input"
-                                               :class="errors.has(input.name) ? 'is-invalid' : ''"
-                                               :key="input.name" @uploads="setUploads(input.name)"></component>
+                                        <input class="form-control disabled form-control-plaintext" type="text" :value="input.value" disabled :readonly="input.readonly">
+                                    </div>
 
-                                    <div v-show="errors.has(input.name)" class="invalid-feedback"
-                                         style="display: block!important;">
-                                        {{ errors.first(input.name) }}
+                                    <div class="form-group mb-6" :class="errors.has(input.name) ? 'u-has-error' : ''" v-else>
+                                        <label :for="input.name" class="col-form-label">
+                                            {{ input.label }} <span class="text-danger" v-if="input.required || false">*</span>
+                                        </label>
+
+                                        <component :is="input.type_input || 'input-default'" :data="input"
+                                                   :class="errors.has(input.name) ? 'is-invalid' : ''" :id="input.name"
+                                                   :key="input.name"></component>
+
+                                        <div v-show="errors.has(input.name)" class="invalid-feedback" style="display: block!important;">
+                                            {{ errors.first(input.name) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -34,16 +44,25 @@
                 </div>
 
                 <div class="row" v-else>
-                    <div class="form-group" v-for="input in form" :class="input.col || 'col-md-12'"
-                         v-if="condition(input, form)">
-                        <label :for="input.name" class="col-form-label"> {{ input.label }} </label>
+                    <div v-for="input in form" :class="input.col || 'col-md-12'" v-if="condition(input, form)">
+                        <div class="form-group" v-if="input.disabled">
+                            <label class="col-form-label"> {{ input.label }} </label>
 
-                        <component :is="input.type_input || 'input-default'" :data="input"
-                                   :class="errors.has(input.name) ? 'is-invalid' : ''"
-                                   :key="input.name" @uploads="setUploads(input.name)"></component>
+                            <input class="form-control u-form__input disabled form-control-plaintext" type="text" :value="input.value" disabled :readonly="input.readonly">
+                        </div>
 
-                        <div v-show="errors.has(input.name)" class="invalid-feedback" style="display: block">
-                            {{ errors.first(input.name) }}
+                        <div class="form-group" :class="errors.has(input.name) ? 'u-has-error' : ''" v-else>
+                            <label :for="input.name" class="col-form-label">
+                                {{ input.label }} <span class="text-danger" v-if="input.required || false">*</span>
+                            </label>
+
+                            <component :is="input.type_input || 'input-default'" :data="input"
+                                       :class="errors.has(input.name) ? 'is-invalid' : ''" :id="input.name"
+                                       :key="input.name"></component>
+
+                            <div v-show="errors.has(input.name)" class="invalid-feedback" style="display: block">
+                                {{ errors.first(input.name) }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,25 +70,24 @@
         </div>
         <div class="card-footer form-custom">
             <button type="button" class="btn btn-primary" @click="submitForm">Salvar</button>
-            <a :href="config.url_return" class="btn btn-outline-secondary">Voltar</a>
+            <button type="button" class="btn btn-outline-secondary" @click="$router.go(-1)">Voltar</button>
         </div>
     </div>
 </template>
 
 <script>
-    import InputMask from './components/inputs/mask'
-    import InputDefault from './components/inputs/default'
-    import InputSelected from './components/inputs/selected'
-    import InputEditor from './components/inputs/editor'
-    import InputMoney from './components/inputs/money'
-    import InputSwitch from './components/inputs/switch'
-    import InputDate from './components/inputs/date'
-    import InputUpload from './components/inputs/upload'
-    import InputCheckbox from './components/inputs/checkbox'
-    import InputRadio from './components/inputs/radio'
-    import InputSelectedSearch from './components/inputs/selected-search'
-    import InputSelectedHelper from './components/inputs/selected-helper'
-    import InputTextarea from './components/inputs/textarea'
+    import InputMask from './inputs/mask'
+    import InputDefault from './inputs/default'
+    import InputSelected from './inputs/selected'
+    import InputEditor from './inputs/editor'
+    import InputMoney from './inputs/money'
+    import InputSwitch from './inputs/switch'
+    import InputDate from './inputs/date'
+    import InputCheckbox from './inputs/checkbox'
+    import InputRadio from './inputs/radio'
+    import InputSelectedSearch from './inputs/selected-search'
+    import InputSelectedHelper from './inputs/selected-helper'
+    import InputTextarea from './inputs/textarea'
 
     export default {
         name: "forms-vue",
@@ -84,7 +102,6 @@
             InputMoney,
             InputCheckbox,
             InputDate,
-            InputUpload,
             InputSwitch,
             InputRadio,
             InputSelectedSearch,
@@ -92,23 +109,35 @@
             InputTextarea
         },
         data: () => ({
+            field_set: false,
             config: {},
             form: {},
-            varUploads: [],
-            count: 0
+            method: ''
         }),
         props: {
             data: {
                 require: true,
-                type: String
+                type: [String, Object, Array]
+            }
+        },
+        watch: {
+            data(value) {
+                if (_.isString(value)) {
+                    let data = JSON.parse(value)
+
+                    this.field_set = data.field_set || false
+                    this.form = data.form
+                    this.method = data.method || 'POST'
+                } else {
+                    this.field_set = value.field_set || false
+                    this.form = value.form
+                    this.method = value.method || 'POST'
+                }
             }
         },
         computed: {
             header: function () {
                 return this.config.header || false
-            },
-            field_set: function () {
-                return this.config.field_set || false
             }
         },
         methods: {
@@ -149,25 +178,15 @@
 
                 return true
             },
-            setInputGroup(input) {
-                return JSON.parse(input)
-            },
-            setUploads(name) {
-                this.varUploads[this.count] = name
-
-                this.count++
-            },
-            cleanMask(value) {
-                return _.isArray(value) ? collect(value).values().all() : value
-            },
             submitForm() {
                 this.$validator.validateAll().then(
                     res => {
                         if (res) {
                             let data = [],
                                 inputs = [],
-                                group = this.config.field_set || false,
-                                form = collect(this.form)
+                                group = this.field_set,
+                                form = collect(this.form),
+                                dataForm = new FormData()
 
                             if (!group) {
                                 data = form.pluck('value', 'name').all()
@@ -186,60 +205,21 @@
                                 })
                             }
 
-                            let dataForm = new FormData(),
-                                headers = {}
-
-                            if (this.varUploads.length > 0) {
-                                headers = {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-
-                                for (let key in data) {
-                                    let condition = _.find(this.varUploads, function(o) { return o === key })
-
-                                    if (_.isUndefined(condition)) {
-                                        if (_.isObject(data[key])){
-                                            dataForm.set(key, data[key])
-                                        } else {
-                                            dataForm.set(key, data[key])
-                                        }
-                                    } else {
-                                        let attachments = data[key]
-
-                                        for (let i = 0; i < attachments.length; i++) {
-                                            dataForm.append(`${key}[]`, attachments[i]);
-                                        }
-                                    }
-
-                                    if (key === 'attachments') {
-
-                                    } else {
-                                        dataForm.set(key, data[key])
-                                    }
-                                }
-                            } else {
-                                for (let key in data) {
-                                    if (_.isObject(data[key])) {
-                                        dataForm.set(key, data[key])
-                                    } else {
-                                        dataForm.set(key, data[key])
-                                    }
+                            for (let key in data) {
+                                if (_.isObject(data[key])) {
+                                    dataForm.set(key, data[key])
+                                } else {
+                                    dataForm.set(key, data[key])
                                 }
                             }
 
-                            dataForm.set('_method', this.config.method)
+                            dataForm.set('_method', this.data.method)
 
-                            this.$emit('submitForm', this.config.url_submit, this.config.callback, dataForm, headers)
+                            this.$emit('submitForm', dataForm)
                         }
                     }
                 )
             }
-        },
-        mounted() {
-            let data = JSON.parse(this.data)
-
-            this.form = data.form
-            this.config = data.config
         }
     }
 </script>

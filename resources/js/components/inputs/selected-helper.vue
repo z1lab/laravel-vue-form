@@ -26,7 +26,7 @@
                     return 'required'
                 }
             },
-            infoSearch(){
+            infoSearch() {
                 return _.isEmpty(this.options) ? 'Nada foi encontrado em nossa base' : 'Selecione uma das opções base'
             }
         },
@@ -43,7 +43,7 @@
         }),
         watch: {
             input_search(item) {
-                let collection = collect(this.data.options.values)
+                let collection = collect(this.data.options.data)
 
                 this.class_show = 'show'
 

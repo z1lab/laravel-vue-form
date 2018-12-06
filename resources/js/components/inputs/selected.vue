@@ -2,7 +2,7 @@
     <select class="form-control"  :id="data.name" v-model="data.value" :name="data.name" v-validate="validate" :data-vv-as="data.label">
         <option value="">Selecione uma das Opções</option>
 
-        <option v-for="option in data.options.values" :value="data.options.name_value ? option[data.options.name_value] : option">
+        <option v-for="option in options" :value="data.options.value ? option[data.options.value] : option">
             {{ label(option, data.options.label) }}
         </option>
     </select>
@@ -21,6 +21,9 @@
                 } else {
                     return 'required'
                 }
+            },
+            options() {
+                return this.data.options.data || this.data.options
             }
         },
         props: {

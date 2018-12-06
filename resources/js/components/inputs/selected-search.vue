@@ -48,7 +48,7 @@
                     this.class_show = ''
                 }
 
-                let collection = collect(this.data.options.values)
+                let collection = collect(this.data.options.data)
 
                 this.class_show = 'show'
 
@@ -59,7 +59,7 @@
             setValue(value) {
                 this.input_search = this.label(value, this.data.options.label)
                 this.input_base = this.label(value, this.data.options.label)
-                this.data.value = this.data.options.name_value ? value[this.data.options.name_value] : value
+                this.data.value = this.data.options.value ? value[this.data.options.value] : value
             },
             label(option, item) {
                 let concat = ''

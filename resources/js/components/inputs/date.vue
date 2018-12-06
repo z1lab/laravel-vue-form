@@ -32,12 +32,13 @@
         },
         updated() {
             flatpickr(`#${this.data.name}`, {
-                minDate: this.data.minDate ? this.data.minDate : '',
-                time_24hr: true,
-                altInput: true,
+                minDate: this.data.min_date ? this.data.min_date : '',
+                maxDate: this.data.max_date ? this.data.max_date : '',
+                time_24hr: this.data.time_24hr || true,
+                altInput: this.data.altInput || true,
                 defaultDate: this.data.value,
-                enableTime: true,
-                dateFormat: 'd-m-Y H:i'
+                enableTime: this.data.time || false,
+                dateFormat: this.data.format || 'Y-m-d'
             });
         }
     }

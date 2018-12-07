@@ -177,7 +177,6 @@ class Input extends Model
     {
         $this->attributes['disabled'] = $value;
         $this->attributes['readonly'] = $value;
-        $this->attributes['name'] = NULL;
 
         return $this;
     }

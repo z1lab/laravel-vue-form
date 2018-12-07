@@ -48,7 +48,7 @@ class FormServiceProvider extends ServiceProvider
     public function publishComponents()
     {
         $this->publishes([
-            __DIR__ . '/../resources/js/components' => base_path('resources/js/components/forms'),
+            __DIR__ . '/../resources/js' => base_path('resources/js'),
         ], 'form-components');
     }
 

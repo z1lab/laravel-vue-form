@@ -14,12 +14,13 @@ use Jenssegers\Model\Model;
 
 class Form extends Model
 {
-    const FORM = [];
-    const HEADER = [];
-    const SELF = '';
-    const ACTION = '';
-    const METHOD = 'POST';
-    const FIELDSET = FALSE;
+    const FORM      = [];
+    const HEADER    = [];
+    const SELF      = '';
+    const ACTION    = '';
+    const METHOD    = 'POST';
+    const FIELDSET  = FALSE;
+    const API_TOKEN = '';
 
     /**
      * @var array
@@ -41,10 +42,21 @@ class Form extends Model
         'field_set' => self::FIELDSET,
         'self'      => self::SELF,
         'action'    => self::ACTION,
+        'api_token' => self::API_TOKEN,
     ];
 
     /**
-     * @param string $value
+     * Form constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (\Auth::check() && isset(\Auth::user()->api_token)) $this->attributes['api_token'] = \Auth::user()->api_token;
+    }
+
+    /**
+     * @param  string  $value
      */
     public function setActionAttribute(string $value)
     {
@@ -54,8 +66,9 @@ class Form extends Model
     }
 
     /**
-     * @param string $title
-     * @param string $subtitle
+     * @param  string  $title
+     * @param  string  $subtitle
+     *
      * @return $this
      */
     public function header(string $title = '', string $subtitle = '')
@@ -69,7 +82,8 @@ class Form extends Model
     }
 
     /**
-     * @param array $fields
+     * @param  array  $fields
+     *
      * @return $this
      */
     public function createMany(array $fields)
@@ -82,7 +96,8 @@ class Form extends Model
     }
 
     /**
-     * @param Fieldset|Input $field
+     * @param  Fieldset|Input  $field
+     *
      * @return $this
      */
     public function create($field)
@@ -97,7 +112,7 @@ class Form extends Model
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      */
     public function setFormAttribute(array $data = [])
     {
@@ -113,7 +128,8 @@ class Form extends Model
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
+     *
      * @return $this
      */
     public function action(string $value)
@@ -124,7 +140,8 @@ class Form extends Model
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
+     *
      * @return $this
      */
     public function self(string $value)
@@ -135,7 +152,8 @@ class Form extends Model
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
+     *
      * @return $this
      */
     public function method(string $value)
@@ -146,7 +164,8 @@ class Form extends Model
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
+     *
      * @return $this
      */
     public function return(string $value)
@@ -157,7 +176,8 @@ class Form extends Model
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
+     *
      * @return $this
      */
     public function callback(string $value)
@@ -168,13 +188,15 @@ class Form extends Model
     }
 
     /**
-     * @param Fieldset $fieldset
+     * @param  Fieldset  $fieldset
+     *
      * @return $this
      */
     private function fieldset(Fieldset $fieldset)
     {
-        if (isset($this->attributes['form']) && isset($this->attributes['form'][0]['type']))
+        if (isset($this->attributes['form']) && isset($this->attributes['form'][0]['type'])) {
             throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
+        }
 
         $this->attributes['field_set'] = TRUE;
 
@@ -185,6 +207,7 @@ class Form extends Model
 
     /**
      * @param $input
+     *
      * @return $this
      */
     private function input($input)

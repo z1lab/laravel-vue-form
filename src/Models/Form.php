@@ -8,6 +8,7 @@
 
 namespace Z1lab\Form\Models;
 
+use Illuminate\Support\Str;
 use Jenssegers\Model\MassAssignmentException;
 use Jenssegers\Model\Model;
 
@@ -47,7 +48,7 @@ class Form extends Model
      */
     public function setActionAttribute(string $value)
     {
-        if (str_contains($value, 'update')) $this->attributes['method'] = 'PUT';
+        if (Str::contains($value, 'update')) $this->attributes['method'] = 'PUT';
 
         $this->attributes['action'] = $value;
     }

@@ -8,6 +8,7 @@
 
 namespace Z1lab\Form\Models;
 
+use Illuminate\Support\Str;
 use Jenssegers\Model\Model;
 
 class Input extends Model
@@ -107,7 +108,7 @@ class Input extends Model
      */
     public function validate(string $value)
     {
-        if (str_contains($value, 'required')) $this->attributes['required'] = TRUE;
+        if (Str::contains($value, 'required')) $this->attributes['required'] = TRUE;
 
         $this->attributes['validate'] = $value;
 

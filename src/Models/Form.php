@@ -52,7 +52,11 @@ class Form extends Model
     {
         parent::__construct();
 
-        if (\Auth::check() && isset(\Auth::user()->api_token)) $this->attributes['api_token'] = \Auth::user()->api_token;
+        if (\Auth::check() && isset(\Auth::user()->api_token)) {
+            $this->attributes['api_token'] = \Auth::user()->api_token;
+        } elseif (\Auth::guard('api')->check() && isset(\Auth::guard()->user('api')->api_token)) {
+            $this->attributes['api_token'] = \Auth::guard('api')->user()->api_token;
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ use Z1lab\Form\Models\Input;
 
 class TextArea extends Input
 {
-    const TYPE_INPUT = 'textarea';
+    const TYPE_INPUT = 'input-textarea';
 
     /**
      * TextArea constructor.

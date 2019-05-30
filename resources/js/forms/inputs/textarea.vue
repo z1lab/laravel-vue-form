@@ -1,5 +1,5 @@
 <template>
-    <textarea class="form-control" :name="data.name" :id="data.name" rows="5" v-validate="validate" :data-vv-as="data.label" v-model="data.value"></textarea>
+    <textarea class="form-control" :name="data.name" rows="5" v-validate="validate" :data-vv-as="data.label" v-model="data.value"></textarea>
 </template>
 
 <script>

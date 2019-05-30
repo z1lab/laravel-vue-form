@@ -1,43 +1,41 @@
 import Vue from 'vue'
-import {submitFormVue} from "../vendor/common";
+
+import FormVue from './forms-vue.vue'
+import store from './store/store'
+
+/* Ziggy */
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 /* Validate */
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate, { inject: false })
 
-require('../vendor/validator')
-
-/* Components */
-import FormVue from './forms-vue'
-import LoadingComponent from '../components/loadingComponent'
+require('./vendor/validator')
 
 new Vue({
     name: 'vue-form',
     el: '#vue-form',
-    components: {
-        FormVue,
-        LoadingComponent
-    },
     data: () => ({
-        isLoading: false
+        url: '',
+        apiToken: '',
+        buttonSubmit: ''
     }),
-    methods: {
-        submitForm(dataForm, action, callback = null) {
-            Pace.start()
-            this.isLoading = true
+    render(h) {
+        this.url = this.$el.dataset.url ? this.$el.dataset.url : this.url
+        this.apiToken = this.$el.dataset.apiToken ? this.$el.dataset.apiToken : this.apiToken
+        this.buttonSubmit = this.$el.dataset.buttonSubmit ? this.$el.dataset.buttonSubmit : this.buttonSubmit
 
-            submitFormVue(action, dataForm).then(
-                response => {
-                    window.location.href = callback || response.data.data.links.self
-                }
-            ).catch(
-                error => {
-                    Pace.stop()
-                    this.isLoading = false
-
-                    console.dir(error)
-                }
-            )
-        },
-    }
+        return h(FormVue, {
+            props: {
+                url: this.url,
+                apiToken: this.apiToken,
+                buttonSubmit: this.buttonSubmit
+            }
+        })
+    },
+    store
 });

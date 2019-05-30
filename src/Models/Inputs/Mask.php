@@ -13,6 +13,7 @@ use Z1lab\Form\Models\Input;
 class Mask extends Input
 {
     const TYPE_INPUT = 'input-mask';
+    const MASKED = FALSE;
 
     /**
      * Mask constructor.
@@ -23,6 +24,7 @@ class Mask extends Input
     {
         $attributes = array_merge($this->getAttributes(), $attributes);
         $attributes['type_input'] = self::TYPE_INPUT;
+        $attributes['masked'] = self::MASKED;
 
         parent::__construct($attributes);
     }
@@ -37,10 +39,21 @@ class Mask extends Input
     }
 
     /**
+     * @param bool $value
+     * @return $this
+     */
+    public function masked(bool $value = TRUE)
+    {
+        $this->attributes['masked'] = $value;
+
+        return $this;
+    }
+
+    /**
      * @param string $value
      * @return $this
      */
-    public function add(string $value)
+    private function add(string $value)
     {
         if (isset($this->attributes['mask'])) {
             if (is_array($this->attributes['mask'])) {

@@ -8,9 +8,8 @@
 
 namespace Z1lab\Form\Models;
 
-use Illuminate\Support\Str;
-use Jenssegers\Model\MassAssignmentException;
 use Jenssegers\Model\Model;
+use Z1lab\Form\Http\Resource\Form as Resource;
 
 class Form extends Model
 {
@@ -19,7 +18,6 @@ class Form extends Model
     const SELF      = '';
     const ACTION    = '';
     const METHOD    = 'POST';
-    const FIELDSET  = FALSE;
     const API_TOKEN = '';
 
     /**
@@ -29,7 +27,6 @@ class Form extends Model
         'self',
         'header',
         'action',
-        'return',
         'callback',
     ];
     /**
@@ -39,7 +36,6 @@ class Form extends Model
         'form'      => self::FORM,
         'header'    => self::HEADER,
         'method'    => self::METHOD,
-        'field_set' => self::FIELDSET,
         'self'      => self::SELF,
         'action'    => self::ACTION,
         'api_token' => self::API_TOKEN,
@@ -57,16 +53,6 @@ class Form extends Model
         } elseif (\Auth::guard('api')->check() && isset(\Auth::guard()->user('api')->api_token)) {
             $this->attributes['api_token'] = \Auth::guard('api')->user()->api_token;
         }
-    }
-
-    /**
-     * @param  string  $value
-     */
-    public function setActionAttribute(string $value)
-    {
-        if (Str::contains($value, 'update')) $this->attributes['method'] = 'PUT';
-
-        $this->attributes['action'] = $value;
     }
 
     /**
@@ -100,7 +86,7 @@ class Form extends Model
     }
 
     /**
-     * @param  Fieldset|Input  $field
+     * @param  Fieldset|PostalCode|Input  $field
      *
      * @return $this
      */
@@ -108,27 +94,13 @@ class Form extends Model
     {
         if ($field instanceof Fieldset) {
             $this->fieldset($field);
+        } elseif($field instanceof PostalCode) {
+            $this->postalCode($field);
         } else {
             $this->input($field);
         }
 
         return $this;
-    }
-
-    /**
-     * @param  array  $data
-     */
-    public function setFormAttribute(array $data = [])
-    {
-        $this->attributes['form'][] = $data;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFormAttribute()
-    {
-        return $this->attributes['form'];
     }
 
     /**
@@ -172,23 +144,19 @@ class Form extends Model
      *
      * @return $this
      */
-    public function return(string $value)
-    {
-        $this->attributes['return'] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param  string  $value
-     *
-     * @return $this
-     */
     public function callback(string $value)
     {
         $this->attributes['callback'] = $value;
 
         return $this;
+    }
+
+    /**
+     * @return Resource
+     */
+    public function return()
+    {
+        return new Resource(collect($this->toArray()));
     }
 
     /**
@@ -198,28 +166,38 @@ class Form extends Model
      */
     private function fieldset(Fieldset $fieldset)
     {
-        if (isset($this->attributes['form']) && isset($this->attributes['form'][0]['type'])) {
-            throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
-        }
-
-        $this->attributes['field_set'] = TRUE;
-
         $this->setFormAttribute($fieldset->toArray());
 
         return $this;
     }
 
     /**
-     * @param $input
-     *
+     * @param PostalCode $postalCode
      * @return $this
      */
-    private function input($input)
+    private function postalCode(PostalCode $postalCode)
     {
-        if ($this->attributes['field_set']) throw new MassAssignmentException('Not allowed to set input and fieldsets in same Form instance.');
-
-        $this->setFormAttribute($input->toArray());
+        $this->setFormAttribute($postalCode->toArray());
 
         return $this;
+    }
+
+    /**
+     * @param Input $input
+     * @return $this
+     */
+    private function input(Input $input)
+    {
+        $this->setFormAttribute(['data' => $input->toArray(), 'component' => 'input-component']);
+
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     */
+    private function setFormAttribute(array $data = [])
+    {
+        $this->attributes['form'][] = $data;
     }
 }

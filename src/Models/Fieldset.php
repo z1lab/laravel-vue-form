@@ -13,10 +13,13 @@ use Jenssegers\Model\Model;
 
 class Fieldset extends Model
 {
+    const COMPONENT = 'fieldset-component';
+
     /**
      * @var array
      */
     protected $fillable = [
+        'component',
         'legend',
         'subtitle',
     ];
@@ -24,7 +27,8 @@ class Fieldset extends Model
      * @var array
      */
     protected $attributes = [
-        'inputs' => [],
+        'component' => self::COMPONENT,
+        'data' => [],
     ];
 
     /**
@@ -34,7 +38,7 @@ class Fieldset extends Model
     public function createMany(array $fields)
     {
         foreach ($fields as $field) {
-            if ($field instanceof Fieldset) throw new MassAssignmentException('createMany accepts only Inputs');
+            if (!$field instanceof Input) throw new MassAssignmentException('createMany accepts only Inputs');
 
             $this->create($field);
         }
@@ -48,7 +52,7 @@ class Fieldset extends Model
      */
     public function create($input)
     {
-        $this->setInputsAttribute($input->toArray());
+        $this->setDataAttribute($input->toArray());
 
         return $this;
     }
@@ -56,9 +60,9 @@ class Fieldset extends Model
     /**
      * @param array $data
      */
-    public function setInputsAttribute(array $data = [])
+    private function setDataAttribute(array $data = [])
     {
-        $this->attributes['inputs'][] = $data;
+        $this->attributes['data'][] = $data;
     }
 
     /**

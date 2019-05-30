@@ -2,7 +2,7 @@
     <select class="form-control"  :id="data.name" v-model="data.value" :name="data.name" v-validate="validate" :data-vv-as="data.label">
         <option value="">Selecione uma das Opções</option>
 
-        <option v-for="option in options" :value="data.options.value ? option[data.options.value] : option">
+        <option v-for="option in options" :value="data.options.key ? option[data.options.key] : option">
             {{ label(option, data.options.label) }}
         </option>
     </select>

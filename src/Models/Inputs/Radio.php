@@ -26,4 +26,15 @@ class Radio extends Input
 
         parent::__construct($attributes);
     }
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function radios(array $data)
+    {
+        $this->attributes['radios'] = $data;
+
+        return $this;
+    }
 }

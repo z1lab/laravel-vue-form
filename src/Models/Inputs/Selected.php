@@ -12,7 +12,9 @@ use Z1lab\Form\Models\Input;
 
 class Selected extends Input
 {
-    const TYPE_INPUT = 'input-selected';
+    const INPUT_SELECTED        = 'input-selected';
+    const INPUT_SELECTED_HELPER = 'input-selected-helper';
+    const INPUT_SELECTED_SEARCH = 'input-selected-search';
 
     /**
      * Selected constructor.
@@ -22,30 +24,34 @@ class Selected extends Input
     public function __construct(array $attributes = [])
     {
         $attributes = array_merge($this->getAttributes(), $attributes);
-        if (!isset($attributes['type_input'])) $attributes['type_input'] = self::TYPE_INPUT;
+        if (!isset($attributes['type_input'])) $attributes['type_input'] = self::INPUT_SELECTED;
 
         parent::__construct($attributes);
     }
 
     /**
-     * @param string|array $label
-     * @param string       $value
-     * @param array        $data
+     * @param array $data
+     * @param string|array|NULL $label
+     * @param string|NULL $key
      * @return $this
      */
-    public function options($label = '', string $value = '', array $data = [])
+    public function options(array $data = [], $label = NULL, string $key = NULL)
     {
-        $this->attributes['options'] = [
-            'label' => (NULL !== $label) ? $label : '',
-            'value' => $value,
-            'data'  => $data,
-        ];
+        if ($label !== NULL || $key !== NULL) {
+            $this->attributes['options'] = [
+                'label' => (NULL !== $label) ? $label : '',
+                'key' => $key,
+                'data'  => $data,
+            ];
+        } else {
+            $this->attributes['options'] = $data;
+        }
 
         return $this;
     }
 
     /**
-     * @param string| array $label
+     * @param string|array $label
      * @return $this
      */
     public function label($label)
@@ -60,12 +66,12 @@ class Selected extends Input
     }
 
     /**
-     * @param string $value
+     * @param string $key
      * @return $this
      */
-    public function value($value)
+    public function key(string $key)
     {
-        $this->attributes['options']['value'] = $value;
+        $this->attributes['options']['key'] = $key;
 
         return $this;
     }
@@ -76,10 +82,25 @@ class Selected extends Input
      */
     public function data(array $array)
     {
-        if (isset($this->attributes['options']['data'])) {
+        if (gettype($array[0]) === 'array') {
             $this->attributes['options']['data'] = $array;
         } else {
             $this->attributes['options'] = $array;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function typeInput(string $type)
+    {
+        if ($type === 'helper') {
+            $this->attributes['type_input'] = self::INPUT_SELECTED_HELPER;
+        } elseif($type === 'search') {
+            $this->attributes['type_input'] = self::INPUT_SELECTED_SEARCH;
         }
 
         return $this;

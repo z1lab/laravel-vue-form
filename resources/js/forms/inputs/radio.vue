@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        name: "checkbox-input",
+        name: "radio-input",
         inject: ['$validator'],
         computed: {
             validate() {

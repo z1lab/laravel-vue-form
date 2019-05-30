@@ -1,7 +1,7 @@
 <template>
     <the-mask class="form-control"  :type="data.type || 'text'" :id="data.name" :name="data.name" :placeholder="data.placeholder || ''"
-              v-validate="validate" :data-vv-as="data.label" :mask="cleanMask(data.mask)" v-model="data.value"
-    ></the-mask>
+              v-validate="validate" :data-vv-as="data.label" :mask="cleanMask(data.mask)" v-model="data.value" :masked="data.masked || false"
+    />
 </template>
 
 <script>

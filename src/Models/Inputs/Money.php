@@ -13,6 +13,7 @@ use Z1lab\Form\Models\Input;
 class Money extends Input
 {
     const TYPE_INPUT = 'input-money';
+    const MASKED = FALSE;
 
     /**
      * Money constructor.
@@ -23,8 +24,20 @@ class Money extends Input
     {
         $attributes = array_merge($this->getAttributes(), $attributes);
         $attributes['type_input'] = self::TYPE_INPUT;
+        $attributes['masked'] = self::MASKED;
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function masked(bool $value = TRUE)
+    {
+        $this->attributes['masked'] = $value;
+
+        return $this;
     }
 
     /**

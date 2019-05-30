@@ -1,7 +1,6 @@
 <template>
     <input class="form-control" :name="data.name" :type="data.type || 'text'" :id="data.name" :placeholder="data.placeholder || ''"
-           v-validate="validate" :data-vv-as="data.label" v-model="data.value"
-    />
+           v-validate="validate" :data-vv-as="data.label" v-model="data.value"/>
 </template>
 
 <script>

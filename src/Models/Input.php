@@ -16,6 +16,7 @@ class Input extends Model
     const TYPE = 'text';
     const COL = 'col-12';
     const VALUE = '';
+
     /**
      * @var array
      */
@@ -26,12 +27,14 @@ class Input extends Model
         'value',
         'validate',
         'type',
+        'key',
         'placeholder',
         'type_input',
         'required',
         'disabled',
         'readonly',
     ];
+
     /**
      * @var array
      */
@@ -40,26 +43,6 @@ class Input extends Model
         'col'   => self::COL,
         'value' => self::VALUE,
     ];
-
-    /**
-     * @param $value
-     */
-    public function setNameAttribute($value)
-    {
-        if (!isset($this->attributes['label'])) $this->setLabelAttribute($value);
-
-        $this->attributes['disabled'] = FALSE;
-        $this->attributes['readonly'] = FALSE;
-        $this->attributes['name'] = $value;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setLabelAttribute($value)
-    {
-        $this->attributes['label'] = trans("form::form.$value");
-    }
 
     /**
      * @param      $target
@@ -97,13 +80,13 @@ class Input extends Model
      */
     public function col(string $value)
     {
-        $this->attributes['col'] = $value;
+        $this->attributes['col'] = $value ? $value : self::COL;
 
         return $this;
     }
 
     /**
-     * @param string $value
+     * @param string|NULL $value
      * @return $this
      */
     public function validate(string $value)
@@ -149,28 +132,6 @@ class Input extends Model
     }
 
     /**
-     * @param string $value
-     * @return $this
-     */
-    public function typeInput(string $value)
-    {
-        $this->attributes['type_input'] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $value
-     * @return $this
-     */
-    public function required(bool $value = TRUE)
-    {
-        $this->attributes['required'] = $value;
-
-        return $this;
-    }
-
-    /**
      * @param bool $value
      * @return $this
      */
@@ -189,5 +150,46 @@ class Input extends Model
     public function readonly(bool $value = TRUE)
     {
         return $this->disabled($value);
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function key(string $value)
+    {
+        $this->attributes['key'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function removeLabel()
+    {
+        $this->attributes['label'] = '';
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     */
+    private function setNameAttribute($value)
+    {
+        if (!isset($this->attributes['label'])) $this->setLabelAttribute($value);
+
+        $this->attributes['disabled'] = FALSE;
+        $this->attributes['readonly'] = FALSE;
+        $this->attributes['name'] = $value;
+    }
+
+    /**
+     * @param $value
+     */
+    private function setLabelAttribute($value)
+    {
+        $this->attributes['label'] = trans("form::form.$value");
     }
 }

@@ -23,8 +23,19 @@ class Checkbox extends Input
     {
         $attributes = array_merge($this->getAttributes(), $attributes);
         $attributes['type_input'] = self::TYPE_INPUT;
+        $attributes['value'] = [];
 
         parent::__construct($attributes);
     }
 
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function checkboxs(array $data)
+    {
+        $this->attributes['checkboxs'] = $data;
+
+        return $this;
+    }
 }

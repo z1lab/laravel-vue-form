@@ -1,29 +1,5 @@
 import axios from 'axios'
 
-export function searchID () {
-    let path = window.location.pathname;
-    let arr = path.split('/');
-    return arr[arr.length - 1];
-}
-
-/**
- * @param url
- * @returns {Promise<any>}
- */
-export async function getJsonChart(url) {
-    try {
-        let promise = new Promise((resolve, reject) => {
-            axios.get(url).then(function (result) {
-                resolve(result);
-            })
-        });
-
-        return await promise
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 /**
  * @param parameter
  * @returns {Promise<any>}

@@ -1,7 +1,7 @@
 <template>
-    <div class="custom-control custom-checkbox form-custom">
-        <input type="checkbox" data-switch="bool" :id="data.name" :name="data.name" v-model="data.value">
-        <label :for="data.name" data-on-label="Sim" data-off-label="Não"></label>
+    <div class="custom-control custom-switch">
+        <input :id="generateId" type="checkbox" class="custom-control-input" :name="data.name" v-model="data.value">
+        <label :for="generateId" class="custom-control-label">{{data.description}}</label>
     </div>
 </template>
 
@@ -9,6 +9,11 @@
     export default {
         name: "switch-input",
         inject: ['$validator'],
+        computed: {
+            generateId() {
+                return `customSwitch-${Math.random()}`
+            }
+        },
         props: {
             data: {
                 required: true,

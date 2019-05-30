@@ -30,6 +30,17 @@ class CheckSwitch extends Input
     }
 
     /**
+     * @param string $description
+     * @return $this
+     */
+    public function description(string $description)
+    {
+        $this->attributes['description'] = $description;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function on()

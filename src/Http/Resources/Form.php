@@ -22,20 +22,16 @@ class Form extends Resource
         return [
             'type'       => 'forms',
             'id'         => Str::uuid(),
-            'attributes' => parent::toArray($request),
-        ];
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
+            'attributes' => [
+                'form'          => $this->resource['form'],
+                'method'        => $this->resource['method'],
+                'header'        => $this->resource['header'],
+                'api_token'     => $this->when(filled($this->resource['api_token']), $this->resource['api_token'])
+            ],
             'links' => [
-                'self'    => $this->when(isset($this->resource['self']), function () { return $this->resource['self']; }),
-                'related' => $this->resource['action'],
+                'self'     => $this->when(filled($this->resource['self']), $this->resource['self']),
+                'action'   => $this->when(filled($this->resource['action']), $this->resource['action']),
+                'callback' => $this->when(filled($this->resource['callback']), $this->resource['callback'])
             ],
         ];
     }

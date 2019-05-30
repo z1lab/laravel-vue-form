@@ -1,5 +1,5 @@
 <template>
-    <money class="form-control" :id="data.name" v-model="data.value" v-bind="types(data.porcentage)" v-validate="validate" :data-vv-as="data.label" :name="data.name"></money>
+    <money class="form-control" :id="data.name" v-model="data.value" v-bind="types(data.porcentage)" v-validate="validate" :data-vv-as="data.label" :name="data.name" :masked="data.masked || false" />
 </template>
 
 <script>
